@@ -1,7 +1,7 @@
 const generatePage = require('./src/generatePage');
 
 const fs = require('fs');
-const inquirer = require("inqurer");
+const inquirer = require("inquirer");
 
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
@@ -25,10 +25,10 @@ const addManager = () => {
         },
         {
             type: 'input',
-            name: 'employeeId',
+            name: 'id',
             message: 'What is the employee ID for your manager?',
-            validate: employeeId => {
-                if (employeeId) {
+            validate: id => {
+                if (id) {
                     return true;
                 } else {
                     console.log('Please enter the employee Id for the manager!');
@@ -64,8 +64,8 @@ const addManager = () => {
         }
     ])
     .then(managerInput => {
-        const { name, employeeId, email, officeNumber } = managerInput;
-        const manager = new Manager (name, employeeId, email, officeNumber);
+        const { name, id, email, officeNumber } = managerInput;
+        const manager = new Manager (name, id, email, officeNumber);
 
         teamArray.push(manager);
         console.log(manager);
@@ -84,15 +84,15 @@ const addEmployee = () => {
             type: 'list',
             name: 'role',
             message: 'What is the role of this team member?',
-            choices: ["Engineer", "Intern"],
-            validate: role => {
-                if (role) {
-                    return true;
-                } else {
-                    console.log("Please select a role for the team member!");
-                    return false;
-                }
-            }
+            choices: ['Engineer', 'Intern'],
+            // validate: role => {
+            //     if (role) {
+            //         return true;
+            //     } else {
+            //         console.log("Please select a role for the team member!");
+            //         return false;
+            //     }
+            // }
         },
         {
             type: 'input',
@@ -109,7 +109,7 @@ const addEmployee = () => {
         },
         {
             type: 'input',
-            name: 'employeeId',
+            name: 'id',
             message: 'What is their employee ID?',
             validate: employeeId => {
                 if (employeeId) {
@@ -163,13 +163,13 @@ const addEmployee = () => {
         },
         {
             type: 'confirm',
-            name: 'addEmployee',
+            name: 'confirmAddEmployee',
             message: 'Add more employees?',
             default: false
         }
     ])
     .then(employeeData => {
-        let { role, name, email, id, github, school, addEmployee } = employeeData;
+        let { name, email, role, id, github, school, confirmAddEmployee } = employeeData;
         let employee;
 
         if (role === "Engineer") {
@@ -182,7 +182,7 @@ const addEmployee = () => {
 
         teamArray.push(employee);
 
-        if(addEmployee) {
+        if (confirmAddEmployee) {
             return addEmployee(teamArray);
         } else {
             return teamArray;
